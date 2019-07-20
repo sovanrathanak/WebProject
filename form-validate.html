@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.1/css/mdb.min.css" rel="stylesheet">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.1/js/mdb.min.js"></script>
+    <title>Validate</title>
+</head>
+
+<body>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+        Add new Recode
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="frm">
+                        <label for="" id="usemsg"> User Name</label>
+                        <input type="text" id="usename">
+                        <label for="" id="phonemsg">Phone</label>
+                        <input type="text" id="phone">
+                        <label for="" id="schoolmsg">School Name</label>
+                        <input type="text" id="school">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">User Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">School Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        var save = document.getElementById('save')
+        save.addEventListener('click', function (e) {
+            e.preventDefault();
+            let usename = document.getElementById('usename').value;
+            let phone = document.getElementById('phone').value
+            let school = document.getElementById('school').value
+            let usemsg = document.getElementById('usemsg')
+            let schoolmsg = document.getElementById('schoolmsg')
+            let phonemsg = document.getElementById('phonemsg')
+
+            let uValidate
+            let sValidate
+            let cValidate
+            let info = {
+                usename: usename,
+                phone: phone,
+                school: school
+            }
+            // let p = new RegExp('e', 'gi')
+            let patt = /[^a-z]/gi;
+            let pattShool = /[^a-z \s]/gi;
+            let pattphone = /[^0-9]/gi;
+            if (usename.match(patt) != null) {
+                usemsg.innerHTML = "*user input number or other character";
+                usemsg.style.color = 'red'
+                uValidate = false
+            }
+            if (usename.match(patt) == null) {
+                usemsg.innerHTML = "*correct username"
+                usemsg.style.color = 'green'
+                uValidate = true
+
+            }
+            if (usename == "" || usename == null) {
+                usemsg.innerHTML = "*cannot blank"
+                usemsg.style.color = 'red'
+                uValidate = false
+            }
+
+            if (school.match(pattShool) != null) {
+                schoolmsg.innerHTML = "*user incorrect school name"
+                schoolmsg.style.color = 'red'
+                sValidate = false
+
+            }
+
+            if (phone.length < 9 || phone.length > 10) {
+
+                phonemsg.innerHTML = "*invalid contact";
+                phonemsg.style.color = 'red'
+                cValidate = false
+
+            }
+            if (phone.match(pattShool) != null) {
+                phonemsg.innerHTML = "*invalid contact";
+                phonemsg.style.color = 'red'
+                cValidate = false
+            }
+            if (phone[0] == '0' && phone.match(pattphone) == null) {
+                phonemsg.innerHTML = "correct";
+                phonemsg.style.color = 'green'
+                cValidate = true
+            }
+            if (school.match(pattShool) == null) {
+                schoolmsg.innerHTML = "*correct school name"
+                schoolmsg.style.color = 'green'
+                sValidate = true
+            }
+            if (school = "" || school == null) {
+
+                schoolmsg.innerHTML = "*cannot blank"
+                schoolmsg.style.color = 'red'
+                sValidate = false
+
+            }
+            if (uValidate && sValidate && cValidate) {
+                addTable(info);
+                document.getElementById('save').setAttribute('data-dismiss', "modal")
+            }
+
+
+
+        })
+
+        function addTable(info) {
+            let row = document.createElement('tr');
+            let col1 = document.createElement('td');
+            let col2 = document.createElement('td');
+            let col3 = document.createElement('td');
+            let col4 = document.createElement('td');
+            let b = document.createElement('button');
+            b.setAttribute("onclick", "removeInfo(this)")
+            b.className = "class=btn blue-gradient";
+            //=========text node======================
+
+            let urs = document.createTextNode(info.usename);
+            let phone = document.createTextNode(info.phone);
+            let school = document.createTextNode(info.school);
+
+            let title = document.createTextNode('Delete');
+            //=========append ===========================
+            col1.appendChild(urs);
+            col3.appendChild(school);
+            col2.appendChild(phone);
+            b.appendChild(title);
+            col4.appendChild(b);
+            row.appendChild(col1);
+            row.appendChild(col2);
+            row.appendChild(col3);
+            row.appendChild(col4);
+            let tbody = document.getElementsByTagName('tbody')[0];
+            tbody.appendChild(row);
+        }
+        function removeInfo(btn) {
+
+            let r = confirm('jong delete men?')
+            if (r == true) {
+                let parent = btn.parentNode.parentNode.parentNode;
+                let currentRow = btn.parentNode.parentNode
+                parent.removeChild(currentRow);
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
